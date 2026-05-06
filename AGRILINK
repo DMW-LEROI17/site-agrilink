@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>AgriMarket Cameroun · Vitrine agricole digitale</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    body {
+      background: #f4f7f2;
+      color: #1e3b2c;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .app-container {
+      max-width: 500px;
+      margin: 0 auto;
+      width: 100%;
+      background: white;
+      box-shadow: 0 0 30px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+    }
+    /* Header */
+    .header {
+      background: #0b4a2c;
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header i {
+      font-size: 1.8rem;
+      color: #f5b042;
+    }
+    .header-icons {
+      display: flex;
+      gap: 18px;
+      font-size: 1.3rem;
+    }
+    .badge {
+      background: #e63946;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.7rem;
+      position: absolute;
+      top: -6px;
+      right: -10px;
+    }
+    .icon-wrap {
+      position: relative;
+    }
+    /* Navigation modules */
+    .module-nav {
+      display: flex;
+      overflow-x: auto;
+      background: white;
+      padding: 12px 10px;
+      gap: 8px;
+      border-bottom: 1px solid #e6ede4;
+      scrollbar-width: thin;
+      white-space: nowrap;
+    }
+    .module-btn {
+      background: #f0f5ee;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #1e3b2c;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+      flex-shrink: 0;
+    }
+    .module-btn i {
+      font-size: 0.9rem;
+    }
+    .module-btn.active {
+      background: #0b4a2c;
+      color: white;
+    }
+    /* Main content */
+    .main-content {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      background: #fafdf9;
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      border: 1px solid #e9f0e6;
+    }
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .product-item {
+      background: #f9fcf8;
+      border-radius: 16px;
+      padding: 12px;
+      flex: 1 1 45%;
+      border: 1px solid #dfecda;
+    }
+    .price {
+      font-weight: 700;
+      color: #0b4a2c;
+      font-size: 1.2rem;
+    }
+    .location {
+      color: #5f6b5c;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn {
+      background: #f5b042;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 40px;
+      font-weight: 700;
+      color: #0b4a2c;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #0b4a2c;
+      color: #0b4a2c;
+    }
+    .search-bar {
+      background: #f0f5ee;
+      border-radius: 30px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .search-bar input {
+      background: transparent;
+      border: none;
+      width: 100%;
+      outline: none;
+    }
+    .stats-row {
+      display: flex;
+      gap: 10px;
+    }
+    .stat-box {
+      background: #eaf3e5;
+      border-radius: 14px;
+      padding: 12px;
+      flex: 1;
+      text-align: center;
+    }
+    /* bottom nav */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      background: white;
+      padding: 12px 10px;
+      border-top: 1px solid #e0e8dc;
+      position: sticky;
+      bottom: 0;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.75rem;
+      color: #5f6b5c;
+      cursor: pointer;
+    }
+    .nav-item i {
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+    .nav-item.active {
+      color: #0b4a2c;
+      font-weight: 700;
+    }
+    .logo-text {
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    @media (max-width: 400px) {
+      .product-item {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <!-- Header -->
+  <div class="header">
+    <h1><i class="fas fa-seedling"></i> <span class="logo-text">AgriMarket</span></h1>
+    <div class="header-icons">
+      <div class="icon-wrap"><i class="far fa-bell"></i><span class="badge">3</span></div>
+      <i class="far fa-user-circle"></i>
+    </div>
+  </div>
+
+  <!-- Module navigation rapide -->
+  <div class="module-nav" id="moduleNav">
+    <button class="module-btn active" data-module="marketplace"><i class="fas fa-store"></i> Marché</button>
+    <button class="module-btn" data-module="phyto"><i class="fas fa-flask"></i> Phyto</button>
+    <button class="module-btn" data-module="finance"><i class="fas fa-hand-holding-heart"></i> Projets</button>
+    <button class="module-btn" data-module="logistique"><i class="fas fa-truck"></i> Livraison</button>
+    <button class="module-btn" data-module="admin"><i class="fas fa-chart-pie"></i> Admin</button>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="main-content" id="mainContent">
+    <!-- MODULE MARKETPLACE -->
+    <div id="marketplace" class="section active">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Rechercher manioc, tomates, maïs...">
+      </div>
+      <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+        <select style="flex:1; padding:10px; border-radius:20px; border:1px solid #ccc;">
+          <option>Toutes régions</option><option>Yaoundé</option><option>Douala</option><option>Bafoussam</option>
+        </select>
+        <select style="flex:1; padding:10px; border-radius:20px; border:1px solid #ccc;">
+          <option>Prix croissant</option><option>Prix décroissant</option>
+        </select>
+      </div>
+      <div class="product-grid">
+        <div class="product-item">
+          <div style="font-weight:700;">🌽 Maïs blanc</div>
+          <div class="location"><i class="fas fa-map-marker-alt"></i> Bafoussam</div>
+          <div class="price">3500 FCFA/kg</div>
+          <small>Qtté: 200 kg</small>
+          <button class="btn" style="padding:8px; margin-top:6px;"><i class="fas fa-shopping-cart"></i> Commander</button>
+        </div>
+        <div class="product-item">
+          <div style="font-weight:700;">🍅 Tomates fraîches</div>
+          <div class="location"><i class="fas fa-map-marker-alt"></i> Foumbot</div>
+          <div class="price">1200 FCFA/bassin</div>
+          <small>Qtté: 50 bassins</small>
+          <button class="btn" style="padding:8px; margin-top:6px;"><i class="fas fa-shopping-cart"></i> Commander</button>
+        </div>
+        <div class="product-item">
+          <div style="font-weight:700;">🥜 Arachides</div>
+          <div class="location"><i class="fas fa-map-marker-alt"></i> Garoua</div>
+          <div class="price">2800 FCFA/kg</div>
+          <small>Qtté: 150 kg</small>
+          <button class="btn" style="padding:8px; margin-top:6px;"><i class="fas fa-shopping-cart"></i> Commander</button>
+        </div>
+      </div>
+      <div class="card">
+        <i class="fas fa-mobile-alt"></i> <strong>Paiement Mobile Money</strong>
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <span style="background:#fdcb00; padding:5px 15px; border-radius:20px;">MTN MoMo</span>
+          <span style="background:#ff7900; padding:5px 15px; border-radius:20px; color:white;">Orange Money</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE PHYTO-SANITAIRE -->
+    <div id="phyto" class="section">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>🏭 Entreprises Phyto</h3>
+        <span style="color:#0b4a2c;"><i class="fas fa-check-circle"></i> Profil vérifié</span>
+      </div>
+      <div class="card">
+        <strong>AgriChem SA</strong> · <span style="background: gold; padding:2px 8px; border-radius:12px;">Sponsorisé</span>
+        <p>Engrais NPK 20-10-10 · 50kg</p>
+        <div class="price">18 500 FCFA</div>
+        <button class="btn"><i class="fas fa-file-alt"></i> Fiche technique</button>
+      </div>
+      <div class="card">
+        <strong>Semences Tropicales</strong>
+        <p>Semences maïs hybride · rendement élevé</p>
+        <div class="price">4 200 FCFA/kg</div>
+        <button class="btn btn-outline"><i class="fas fa-tag"></i> Promo -10%</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><i class="fas fa-eye"></i> 1.2k vues</div>
+        <div class="stat-box"><i class="fas fa-shopping-basket"></i> 34 commandes</div>
+      </div>
+    </div>
+
+    <!-- MODULE FINANCEMENT & PROJETS -->
+    <div id="finance" class="section">
+      <h3>🌱 Projets agricoles</h3>
+      <div class="card">
+        <strong>Élevage poulets de chair</strong> · Yaoundé
+        <p>Budget: 2 500 000 FCFA · Rentabilité 22%</p>
+        <progress value="65" max="100" style="width:100%; height:8px; border-radius:8px;"></progress>
+        <small>65% financé (1 625 000 FCFA)</small>
+        <button class="btn"><i class="fas fa-hand-holding-usd"></i> Investir / Crowdfunding</button>
+      </div>
+      <div class="card">
+        <strong>Transformation manioc en farine</strong> · Bafoussam
+        <p>Budget: 5 000 000 FCFA · ROI 18 mois</p>
+        <button class="btn btn-outline"><i class="fas fa-file-pdf"></i> Voir business plan</button>
+      </div>
+    </div>
+
+    <!-- MODULE LOGISTIQUE -->
+    <div id="logistique" class="section">
+      <h3>🚚 Suivi logistique</h3>
+      <div class="card">
+        <p><i class="fas fa-truck-moving"></i> <strong>Transporteur Kamga Express</strong></p>
+        <p>Commande #4521 · Départ Yaoundé → Douala</p>
+        <div style="background:#eee; height:6px; border-radius:6px; width:100%; margin:10px 0;">
+          <div style="background:#0b4a2c; width:70%; height:6px; border-radius:6px;"></div>
+        </div>
+        <small>Livraison estimée : 14h30</small>
+        <button class="btn"><i class="fas fa-check-circle"></i> Confirmer réception</button>
+      </div>
+      <div><strong>Frais calculés :</strong> 2500 FCFA (50 km)</div>
+    </div>
+
+    <!-- MODULE ADMIN (tableau de bord simplifié) -->
+    <div id="admin" class="section">
+      <h3>📊 Tableau de bord Admin</h3>
+      <div class="stats-row">
+        <div class="stat-box">👥 128 utilisateurs</div>
+        <div class="stat-box">✅ 12 entreprises vérifiées</div>
+      </div>
+      <div class="card">
+        <p>💰 Commissions du mois: <strong>245 000 FCFA</strong></p>
+        <p>📦 Transactions: 67</p>
+        <button class="btn-outline" style="width:100%; margin-top:8px;"><i class="fas fa-check"></i> Valider nouveaux comptes</button>
+      </div>
+      <div class="card">
+        <i class="fas fa-ad"></i> Gestion pubs sponsorisées
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom navigation principale -->
+  <div class="bottom-nav">
+    <div class="nav-item active" data-bottom="marketplace"><i class="fas fa-home"></i><span>Accueil</span></div>
+    <div class="nav-item" data-bottom="commandes"><i class="fas fa-shopping-bag"></i><span>Commandes</span></div>
+    <div class="nav-item" data-bottom="publier"><i class="fas fa-plus-circle"></i><span>Publier</span></div>
+    <div class="nav-item" data-bottom="notifs"><i class="fas fa-bell"></i><span>Notifs</span></div>
+    <div class="nav-item" data-bottom="profil"><i class="fas fa-user"></i><span>Profil</span></div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Gestion des modules via la barre supérieure
+    const moduleButtons = document.querySelectorAll('.module-btn');
+    const sections = {
+      marketplace: document.getElementById('marketplace'),
+      phyto: document.getElementById('phyto'),
+      finance: document.getElementById('finance'),
+      logistique: document.getElementById('logistique'),
+      admin: document.getElementById('admin')
+    };
+
+    function setActiveModule(moduleId) {
+      // Cache toutes les sections
+      Object.values(sections).forEach(sec => sec.classList.remove('active'));
+      if (sections[moduleId]) {
+        sections[moduleId].classList.add('active');
+      }
+      // Met à jour les boutons modules
+      moduleButtons.forEach(btn => {
+        const mod = btn.getAttribute('data-module');
+        if (mod === moduleId) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    moduleButtons.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const module = this.getAttribute('data-module');
+        setActiveModule(module);
+        // Synchronise bottom nav si correspondance (accueil = marketplace)
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
+        const bottomMap = {
+          marketplace: 'marketplace',
+          phyto: 'marketplace', // on reste sur icône accueil
+          finance: 'marketplace',
+          logistique: 'commandes',
+          admin: 'profil'
+        };
+        const bottomTarget = bottomMap[module] || 'marketplace';
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(nav => {
+          if (nav.getAttribute('data-bottom') === bottomTarget) {
+            nav.classList.add('active');
+          }
+        });
+      });
+    });
+
+    // Bottom navigation
+    const bottomItems = document.querySelectorAll('.bottom-nav .nav-item');
+    bottomItems.forEach(item => {
+      item.addEventListener('click', function() {
+        bottomItems.forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+        const bottomVal = this.getAttribute('data-bottom');
+        // Mapping bottom vers module section
+        if (bottomVal === 'marketplace' || bottomVal === 'publier') {
+          setActiveModule('marketplace');
+        } else if (bottomVal === 'commandes') {
+          setActiveModule('logistique'); // montre suivi livraison
+        } else if (bottomVal === 'notifs') {
+          alert("🔔 Notifications : Nouvelle commande, promotion engrais.");
+        } else if (bottomVal === 'profil') {
+          setActiveModule('admin'); // profil/admin
+        }
+        // Mettre à jour les boutons module en conséquence
+        const currentActiveSection = document.querySelector('.section.active');
+        if (currentActiveSection) {
+          const id = currentActiveSection.id;
+          moduleButtons.forEach(btn => {
+            if (btn.getAttribute('data-module') === id) {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          });
+        }
+      });
+    });
+
+    // Interactions supplémentaires : alertes pour démonstration
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (e.target.closest('.btn')) {
+          e.preventDefault();
+          const text = e.target.closest('.btn').innerText.trim();
+          if (text.includes('Commander')) alert('🛒 Produit ajouté au panier. Paiement MoMo/Orange Money simulé.');
+          else if (text.includes('Investir')) alert('📈 Redirection vers espace investisseur sécurisé.');
+          else if (text.includes('Confirmer')) alert('✅ Réception confirmée. Le vendeur est noté.');
+          else if (text.includes('Fiche')) alert('📄 Fiche technique téléchargeable.');
+          else if (text.includes('business plan')) alert('📊 Document uploadé visible.');
+        }
+      });
+    });
+
+    // Simulation notification header
+    document.querySelector('.fa-bell').addEventListener('click', () => alert('🔔 3 nouvelles notifications'));
+  })();
+</script>
+</body>
+</html>

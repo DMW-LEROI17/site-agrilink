@@ -1,0 +1,23 @@
+[build]
+  publish = "."
+  command = "echo 'Static site ready'"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://api.agrimarket.cm/backend/index.php?path=:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production]
+  environment = { AGRIMARKET_API = "https://api.agrimarket.cm/backend/index.php?path=" }
+
+[context.deploy-preview]
+  environment = { AGRIMARKET_API = "http://localhost/agrimarket/backend/index.php?path=" }
+
+[context.branch-deploy]
+  environment = { AGRIMARKET_API = "http://localhost/agrimarket/backend/index.php?path=" }
